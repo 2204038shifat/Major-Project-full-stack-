@@ -1,0 +1,62 @@
+<% layout("/layouts/boilerplate") %>
+
+<body>
+
+  <div class="container mt-4">
+
+    <div class="row">
+      <div class="col-md-8 mx-auto">
+
+        <h2 class="mb-4 text-center">Show Individual List</h2>
+
+        <!-- Card -->
+        <div class="card shadow-sm mx-auto" style="max-width: 40rem;">
+          <img
+            src="<%= findListData.image.url %>"
+            class="card-img-top"
+            alt="image"
+          />
+
+          <div class="card-body">
+            <h5 class="card-title"><%= findListData.title %></h5>
+
+            <p class="card-text">
+              <%= findListData.description %>
+            </p>
+
+            <p class="mb-1"><strong>Location:</strong> <%= findListData.location %></p>
+            <p class="mb-1"><strong>Country:</strong> <%= findListData.country %></p>
+
+            <h6 class="mt-2">
+              &#2547; <%= findListData.price.toLocaleString('en-IN') %>
+            </h6>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="d-flex justify-content-center gap-3 mt-4">
+          
+          <a 
+            class="btn btn-outline-primary px-4"
+            href="/listing/<%= findListData._id %>/edit"
+          >
+            Edit
+          </a>
+
+          <form
+            method="POST"
+            action="/listing/<%= findListData._id %>?_method=DELETE"
+          >
+            <button class="btn btn-outline-danger px-4">
+              Delete
+            </button>
+          </form>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</body>

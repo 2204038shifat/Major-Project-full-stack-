@@ -1,0 +1,96 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create New Route</title>
+</head> -->
+
+<% layout("/layouts/boilerplate") %>
+<body>
+
+  <div class="row">
+
+    <div class="col-8 mb-3 mt-3">
+
+     <h3 class="mb-3">Create a new request</h3>
+
+     <form method="POST" action="/listing">
+      <div class="mb-3">
+      <lable for="title" class="form-label">Title</lable>
+      <input
+        type="text"
+        class="form-control"
+        name="listing[title]"
+        placeholder="Enter title"
+        id=""
+      />
+    </div>
+
+    <div class="mb-3">
+      <lable for="description" class="form-label">Description</lable>
+      <textarea
+        class="form-control"
+        name="listing[description]"
+        placeholder="Enter description"
+        type="text"
+        id=""
+      ></textarea>
+    </div>
+
+    <div class="mb-3">
+      <lable for="imgae" class="form-label">image</lable>
+      <input
+        name="listing[image]"
+        class="form-control"
+        id=""
+        placeholder="enter image URL/Link"
+      />
+    </div>
+
+   <div class="row">
+
+    <div class="mb-3 col-4">
+      <lable for="price" class="form-label">price </lable>
+
+      <input
+        class="form-control"
+        placeholder="Enter price"
+        type="number"
+        name="listing[price]"
+        id=""
+      />
+    </div>
+    <div class="mb-3 col-7">
+      <lable for="location" class="form-label">location</lable>
+      <input
+        class="form-control"
+        type="text"
+        name="listing[location]"
+        placeholder="Enter Locatioin"
+        id=""
+      />
+    </div>
+
+   </div>
+
+    <div class="mb-3">
+      <lable for="country" class="form-label">country</lable>
+
+      <input
+        placeholder="Enter country"
+        class="form-control"
+        type="text"
+        name="listing[country]"
+        id=""
+      />
+    </div>
+
+    <button class="btn btn-dark">Add</button>
+  </form>
+    </div>
+
+  </div>
+
+</body>
+<!-- </html> -->

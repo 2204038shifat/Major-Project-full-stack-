@@ -16,6 +16,7 @@ app.use(express.urlencoded({extended : true}));
 app.engine('ejs',ejsMate);
 
 const listing  = require('./models/listing.js');
+const review  = require('./models/review.js');
 
 const mongoUrl = "mongodb://127.0.0.1:27017/wanderlust"
 
@@ -164,6 +165,24 @@ app.get('/listing/:id',async (req,res)=>
 
 //   res.send("successful testing");
 // })
+
+
+//Review Request 
+
+app.post("/listing/:id/reviews",async(req,res)=>
+{
+  let listing_id = await listing.findById(req.params.id);
+  
+  // console.log(req.body);
+  // console.log(req.body.review);
+
+  let newReview = new review(req.body.Review);
+  await listing_id.reviews.push(newReview);
+  await newReview.save();
+  await listing_id.save();
+  console.log("Review is added succesfully");
+  res.redirect(`/listing/${listing_id.id}`);
+})
 
 
 

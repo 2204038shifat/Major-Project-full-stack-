@@ -140,7 +140,7 @@ app.get('/listing',async (req,res)=>
 app.get('/listing/:id',async (req,res)=>
 {
   let {id} = req.params;
-  const findListData = await listing.findById(id);
+  const findListData = await listing.findById(id).populate("reviews");
   console.log(findListData);
   res.render("listing/show.ejs",{findListData});
 
@@ -182,6 +182,19 @@ app.post("/listing/:id/reviews",async(req,res)=>
   await listing_id.save();
   console.log("Review is added succesfully");
   res.redirect(`/listing/${listing_id.id}`);
+})
+
+
+// delele review route
+
+app.delete("/listing/:id/reviews/:reviewId",async(req,res)=>
+{
+  let {id ,reviewId}= req.params;
+
+  await listing.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});
+  await review.findByIdAndDelete(reviewId);
+  res.redirect(`/listing/${id}`);
+
 })
 
 

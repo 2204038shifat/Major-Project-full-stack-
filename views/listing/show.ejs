@@ -105,11 +105,36 @@
         </div>
 
         <!-- Button -->
-        <button type="submit" class="btn btn-outline-danger px-4">
+        <button type="submit" class="btn btn-outline-primary px-4">
             Submit
         </button>
 
     </form>
+
+
+
+
+    <hr>
+
+    <h4>All Review </h4>
+
+<ul class="list-group">
+    <% for(let rev of findListData.reviews) { %>
+        <li class="list-group-item">
+            <div class="d-flex justify-content-between">
+                <span><strong>⭐ <%= rev.rating %>/5</strong></span>
+            </div>
+
+            <p class="mb-0 mt-2"><%= rev.comment %></p>
+            <form method="post" action="/listing/<%= findListData._id %>/reviews/<%= rev._id %>?_method=DELETE">
+              <button type="submit" class="btn btn-outline-danger px-4 m-3">
+            Delete
+        </button>
+            </form>
+        </li>
+    <% } %>
+</ul>
+    <!-- <p> <%= findListData.reviews %> </p> -->
 </div>
 
 

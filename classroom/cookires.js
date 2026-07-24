@@ -2,9 +2,13 @@ const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const path = require("path");
+const ejsMate = require("ejs-mate");
+const flash = require("connect-flash");
+app.set("view engine","ejs");
+app.set("views",path.join(__dirname,"../views"));
 
-
-
+app.use(express.urlencoded({extended : true}));
 
 // app.use(
 //   session({
@@ -26,20 +30,60 @@ const sessionInfo = {
 }
 
 app.use(session(sessionInfo));
+// app.use(session(sessionOptions));
+app.use(flash());
+
+
+app.use((req,res,next)=>
+{
+    //chaile amra variable a save rakhte pari
+  res.locals.name = req.session.name;
+  res.locals.msgSuccess =  req.flash("success");
+  res.locals.msgError = req.flash("Error");
+  next();
+})
 
 app.get("/register",(req,res)=>
 {
   let {name = "anonymous"} = req.query;
-  
-  req.session.name =name,
+
+  req.session.name =name;
   // chaile req.session er modhe store kore onno route seta abr access o korte pari
-  console.log(req.session);
-  res.redirect("/hello"); 
+  // console.log(req.session);
+
+
+  // message flash korbe
+
+    if (name==="anonymous"){
+      req.flash("Error","Not Register Successfully");
+  }
+  else{
+     req.flash("success","User register successfully");
+  }
+  
+ 
+res.redirect("/hello"); 
 })
 
 app.get("/hello",(req,res)=>
 {
-  res.send(`Hello ,${req.session.name}`);
+
+  // console.log(req.flash('success'));
+
+
+  // //chaile amra variable a save rakhte pari
+  // res.locals.name = req.session.name;
+  // res.locals.msgSuccess =  req.flash("success");
+  // res.locals.msgError = req.flash("Error");
+   
+  // er janno alada middle ware define o korte pari
+
+
+
+
+
+  res.render("listing/page.ejs");
+  // res.render("listing/page.ejs",{name : req.session.name , msg : req.flash('success')});
 })
 
 

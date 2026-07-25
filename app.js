@@ -3,11 +3,19 @@ const app = express();
 const mongoose = require("mongoose");
 
 const path = require("path");
+const session = require("express-session");
+const flash = require("connect-flash");
 const ejsMate = require("ejs-mate");
 
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
 app.use(express.static(path.join(__dirname,"public")));
+
+
+
+
+
+
 
 const methodOverride = require('method-override');
 app.use(methodOverride("_method"));
@@ -21,6 +29,23 @@ const listing  = require('./models/listing.js');
 
 const listings = require("./route/listing.js")
 const reviewRouter = require("./route/review.js");
+const { Cookie } = require("express-session");
+
+
+
+const sessionInfo = {
+  secret:"mysupersecretstring",
+   resave:false,
+    saveUninitialized:true,
+    cookie:{
+      expires:Date.now() + 7*24*60*60*1000,
+      maxAge :  7*24*60*60*1000,
+      httpOnly:true
+    }
+  
+}
+app.use(session(sessionInfo));
+app.use(flash());
 
 
 
@@ -38,6 +63,12 @@ async function main() {
   await mongoose.connect(mongoUrl)
   
 }
+
+app.use((req,res,next)=>
+{
+ res.locals.success =  req.flash("success");
+ next();
+})
 
 
 app.use("/listing",listings);

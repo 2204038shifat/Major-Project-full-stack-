@@ -15,7 +15,7 @@ app.use(methodOverride("_method"));
 app.use(express.urlencoded({extended : true}));
 app.engine('ejs',ejsMate);
 
-const listing  = require('../models/listing.js');
+const Listing  = require('../models/listing.js');
 
 
 
@@ -25,7 +25,7 @@ const listing  = require('../models/listing.js');
 router.delete("/:id",async (req,res)=>
 {
   let {id}=req.params;
- let deleteListing=  await listing.findByIdAndDelete(id);
+ let deleteListing=  await Listing.findByIdAndDelete(id);
  console.log(deleteListing);
  res.redirect("/listing");
 
@@ -42,7 +42,7 @@ router.delete("/:id",async (req,res)=>
 router.get("/:id/edit",async (req,res)=>
 {
   let {id}=req.params;
-  let listings = await listing.findById(id);
+  let listings = await Listing.findById(id);
   console.log(listings);
   res.render("listing/edit.ejs",{listings});
 })
@@ -53,7 +53,7 @@ router.get("/:id/edit",async (req,res)=>
 router.put('/:id',async(req,res)=>
 {
   let {id}=req.params;
- await listing.findByIdAndUpdate(id,{...req.body.listing});
+ await Listing.findByIdAndUpdate(id,{...req.body.listing});
 //  res.redirect(`/listing/${id}`);
 res.redirect("/listing");
 
@@ -71,7 +71,7 @@ router.get('/new',(req,res)=>
 })
 
 
-  router.post("router", async (req, res) => {
+  router.post("/", async (req, res) => {
   let { listing } = req.body;
 
   listing.image = {
@@ -81,6 +81,7 @@ router.get('/new',(req,res)=>
 
   const newListing = new Listing(listing);
   await newListing.save();
+  req.flash("success","New Listing added successfully");
 
   res.redirect("/listing");
 });
@@ -88,7 +89,7 @@ router.get('/new',(req,res)=>
 
 router.get('/',async (req,res)=>
 {
-  const allListing = await listing.find({});
+  const allListing = await Listing.find({});
   // console.log(allListing);
     res.render('listing/index.ejs',{allListing});
 })
@@ -99,7 +100,7 @@ router.get('/',async (req,res)=>
 router.get('/:id',async (req,res)=>
 {
   let {id} = req.params;
-  const findListData = await listing.findById(id).populate("reviews");
+  const findListData = await Listing.findById(id).populate("reviews");
   console.log(findListData);
   res.render("listing/show.ejs",{findListData});
 

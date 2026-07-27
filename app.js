@@ -31,6 +31,10 @@ const listings = require("./route/listing.js")
 const reviewRouter = require("./route/review.js");
 const { Cookie } = require("express-session");
 
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/user.js");
+
 
 
 const sessionInfo = {
@@ -46,6 +50,16 @@ const sessionInfo = {
 }
 app.use(session(sessionInfo));
 app.use(flash());
+
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy.Strategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+
+passport.deserializeUser(User.deserializeUser());
 
 
 
@@ -70,6 +84,27 @@ app.use((req,res,next)=>
  res.locals.error = req.flash("error");
  next();
 })
+
+
+
+// Demo User 
+
+app.get("/demoUser",async(req,res)=>
+{
+  const demoUser = new User(
+    {
+      email:"Shifat@gmail.com",
+      username:"abc@123"
+    }
+  );
+  let registeredUser  = await User.register(demoUser,"helloWorld") ;
+
+  // ekhane helloWorld ekta password
+
+  res.send(registeredUser);
+
+})
+
 
 
 app.use("/listing",listings);

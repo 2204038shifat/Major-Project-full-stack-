@@ -27,8 +27,14 @@ app.engine('ejs',ejsMate);
 const review  = require('./models/review.js');
 const listing  = require('./models/listing.js');
 
-const listings = require("./route/listing.js")
+
+
+const listingRouter = require("./route/listing.js")
 const reviewRouter = require("./route/review.js");
+const UserRouter = require("./route/user.js");
+
+
+
 const { Cookie } = require("express-session");
 
 const passport = require("passport");
@@ -89,25 +95,33 @@ app.use((req,res,next)=>
 
 // Demo User 
 
-app.get("/demoUser",async(req,res)=>
-{
-  const demoUser = new User(
-    {
-      email:"Shifat@gmail.com",
-      username:"abc@123"
-    }
-  );
-  let registeredUser  = await User.register(demoUser,"helloWorld") ;
+// app.get("/demoUser",async(req,res)=>
+// {
+//   const demoUser = new User(
+//     {
+//       email:"Shifat@gmail.com",
+//       username:"abc@123"
+//     }
+//   );
+//   let registeredUser  = await User.register(demoUser,"helloWorld") ;
 
-  // ekhane helloWorld ekta password
+//   // ekhane helloWorld ekta password
 
-  res.send(registeredUser);
+//   res.send(registeredUser);
 
-})
+// })
 
 
 
-app.use("/listing",listings);
+
+//sign up 
+
+
+
+
+
+
+app.use("/listing",listingRouter);
 
 
 
@@ -156,6 +170,12 @@ app.use("/listing",listings);
 //review route
 
 app.use("/listing/:id/reviews",reviewRouter);
+
+
+// user route 
+
+app.use("/",UserRouter);
+
 
 
 

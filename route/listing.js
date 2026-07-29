@@ -17,12 +17,14 @@ app.engine('ejs',ejsMate);
 
 const Listing  = require('../models/listing.js');
 
+const {IsLoggedIn, isLoggedIn} = require("../middleware.js");
+
 
 
 
 //delete Route
 
-router.delete("/:id",async (req,res)=>
+router.delete("/:id",isLoggedIn,async (req,res)=>
 {
   let {id}=req.params;
  let deleteListing=  await Listing.findByIdAndDelete(id);
@@ -40,7 +42,7 @@ router.delete("/:id",async (req,res)=>
 
 // Edit and Update Route
 
-router.get("/:id/edit",async (req,res)=>
+router.get("/:id/edit",isLoggedIn,async (req,res)=>
 {
   let {id}=req.params;
   let listings = await Listing.findById(id);
@@ -56,7 +58,7 @@ router.get("/:id/edit",async (req,res)=>
 
 // Update Route
 
-router.put('/:id',async(req,res)=>
+router.put('/:id',isLoggedIn,async(req,res)=>
 {
   let {id}=req.params;
  await Listing.findByIdAndUpdate(id,{...req.body.listing});
@@ -71,7 +73,7 @@ res.redirect("/listing");
 
 //Create New Route
 
-router.get('/new',(req,res)=>
+router.get('/new',isLoggedIn,(req,res)=>
 {
 
   // res.send("req accedpted")
@@ -79,7 +81,7 @@ router.get('/new',(req,res)=>
 })
 
 
-  router.post("/", async (req, res) => {
+  router.post("/", isLoggedIn,async (req, res) => {
   let { listing } = req.body;
 
   listing.image = {

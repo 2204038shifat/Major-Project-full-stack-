@@ -7,19 +7,33 @@ router.get("/signup", (req, res) => {
   res.render("users/signup.ejs");
 });
 
-router.post("/signup", async (req, res) => {
+
+router.post("/signup", async (req, res, next) => {
   try {
     let { username, email, password } = req.body;
-    const newUser = new user({ username, email });
+
+    const newUser = new user({
+      username,
+      email,
+    });
+
     const registerUser = await user.register(newUser, password);
-    console.log(registerUser);
-    req.flash("success", "Welcome to Wonderlust");
-    res.redirect("/listing");
+
+    req.login(registerUser, (err) => {
+      if (err) {
+        return next(err);
+      }
+
+      req.flash("success", "Welcome to Wanderlust!");
+      res.redirect("/listing");
+    });
+
   } catch (e) {
     req.flash("error", e.message);
     res.redirect("/signup");
   }
 });
+
 
 // login route
 

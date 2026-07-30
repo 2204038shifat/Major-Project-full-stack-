@@ -17,7 +17,7 @@ app.engine('ejs',ejsMate);
 
 const Listing  = require('../models/listing.js');
 
-const {IsLoggedIn, isLoggedIn} = require("../middleware.js");
+const {isLoggedIn} = require("../middleware.js");
 
 
 

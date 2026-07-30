@@ -1,9 +1,10 @@
-module.exports.isLoggedIn = (req,res,next)=>
-{
-  if(!req.isAuthenticate())
-  {
-    req.flash("error","Please sign up fisrt");
+
+module.exports.isLoggedIn = (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    req.flash("error", "Please log in first");
     return res.redirect("/login");
-    next();
   }
-}
+
+  next();
+};
+

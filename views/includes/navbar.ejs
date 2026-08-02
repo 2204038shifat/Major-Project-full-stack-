@@ -20,5 +20,39 @@
         </li> -->
       </ul>
     </div>
+
+
+     <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto m-4">
+       <%   if(!CurrUser) { %>
+
+          <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/signup">SignUp </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/login">Login </a>
+        </li>
+
+         <li class="nav-item">
+          <a class="nav-link" href="/logout">Log Out </a>
+        </li>
+
+       <% } %> 
+     <% if(CurrUser) {  %>
+      
+       <li class="nav-item">
+          <a class="nav-link" href="/logout">Log Out </a>
+        </li>
+
+       <% } %>
+      
+       
+        <!-- <li class="nav-item">
+          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+        </li> -->
+      </ul>
+    </div>
+
+
   </div>
 </nav>

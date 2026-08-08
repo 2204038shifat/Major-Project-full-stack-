@@ -110,7 +110,7 @@ router.get('/',async (req,res)=>
 router.get('/:id',async (req,res)=>
 {
   let {id} = req.params;
-  const findListData = await Listing.findById(id).populate("reviews");
+  const findListData = await Listing.findById(id).populate("reviews").populate("owner");
   console.log(findListData);
 
   if(!findListData)

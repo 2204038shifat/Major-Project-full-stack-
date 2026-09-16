@@ -90,6 +90,8 @@ router.get('/new',isLoggedIn,(req,res)=>
   };
 
   const newListing = new Listing(listing);
+  console.log(req.user);
+  newListing.owner = req.user._id;
   await newListing.save();
   req.flash("success","New Listing added successfully");
 

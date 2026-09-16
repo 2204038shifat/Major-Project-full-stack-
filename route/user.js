@@ -23,7 +23,7 @@ router.post("/signup", async (req, res, next) => {
       if (err) {
         return next(err);
       }
-
+ 
       req.flash("success", "Welcome to Wanderlust!");
       res.redirect("/listing");
     });
@@ -35,11 +35,18 @@ router.post("/signup", async (req, res, next) => {
 });
 
 
+
+
+
 // login route
 
 router.get("/login", (req, res) => {
   res.render("users/login.ejs");
 });
+
+
+
+
 
 // login Post Route
 
@@ -56,6 +63,10 @@ router.post(
   },
 );
 
+
+
+
+
 router.get("/logout",(req,res,next)=>
 {
   req.logOut((err)=>
@@ -68,5 +79,9 @@ router.get("/logout",(req,res,next)=>
     res.redirect("/listing")
   })
 })
+
+
+
+
 
 module.exports = router;

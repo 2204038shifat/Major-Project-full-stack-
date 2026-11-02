@@ -37,6 +37,7 @@
         </div>
 
         <!-- Buttons -->
+
         <div class="d-flex justify-content-center gap-3 mt-4">
           
           <a 
@@ -56,10 +57,10 @@
           </form>
 
         </div>
-        
 
 
 
+  <% if(CurrUser) { %>
 
 
      <div class="col-lg-8 offset-lg-2 mt-5">
@@ -114,7 +115,7 @@
 
     </form>
 
-
+<% } %>
 
 
     <hr>
@@ -123,8 +124,10 @@
 
 <ul class="list-group">
     <% for(let rev of findListData.reviews) { %>
+     
         <li class="list-group-item">
             <div class="d-flex justify-content-between">
+               <h4> @<%= rev.author.username%> </h4>
                 <span><strong>⭐ <%= rev.rating %>/5</strong></span>
             </div>
 

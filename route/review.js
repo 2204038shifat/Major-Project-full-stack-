@@ -8,11 +8,12 @@ const router = express.Router({ mergeParams: true });
 
 const review  = require('../models/review.js');
 const listing  = require('../models/listing.js');
+const { isLoggedIn, isReviewOwner } = require("../middleware.js");
 
 
 //Review Request 
 
-router.post("/",async(req,res)=>
+router.post("/",isLoggedIn,async(req,res)=>
 {
   let listing_id = await listing.findById(req.params.id);
   
@@ -20,6 +21,8 @@ router.post("/",async(req,res)=>
   // console.log(req.body.review);
 
   let newReview = new review(req.body.Review);
+  newReview.author = req.user._id;
+  console.log(newReview);
   await listing_id.reviews.push(newReview);
   await newReview.save();
   await listing_id.save();
@@ -31,7 +34,7 @@ router.post("/",async(req,res)=>
 
 // delele review route
 
-router.delete("/:reviewId",async(req,res)=>
+router.delete("/:reviewId",isLoggedIn,isReviewOwner,async(req,res)=>
 {
   let {id ,reviewId}= req.params;
 

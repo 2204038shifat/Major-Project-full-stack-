@@ -3,10 +3,11 @@ const user = require("../models/user");
 const passport = require("passport");
 const router = express.Router();
 
+const { SaveRedirectUrl } = require("../middleware");
+
 router.get("/signup", (req, res) => {
   res.render("users/signup.ejs");
 });
-
 
 router.post("/signup", async (req, res, next) => {
   try {
@@ -23,65 +24,49 @@ router.post("/signup", async (req, res, next) => {
       if (err) {
         return next(err);
       }
- 
+
       req.flash("success", "Welcome to Wanderlust!");
       res.redirect("/listing");
     });
-
   } catch (e) {
     req.flash("error", e.message);
     res.redirect("/signup");
   }
 });
 
-
-
-
-
-// login route
-
-router.get("/login", (req, res) => {
+// Login page
+router.get("/login", SaveRedirectUrl, (req, res) => {
   res.render("users/login.ejs");
 });
 
-
-
-
-
-// login Post Route
-
+// Login POST
 router.post(
   "/login",
   passport.authenticate("local", {
     failureRedirect: "/login",
     failureFlash: true,
   }),
-  async (req, res) => {
+  (req, res) => {
+    req.flash("success", "Successfully logged in! Welcome to Wanderlust");
 
-    req.flash("success","Successfully loged in ! Welcome to Wonderlust");
-    res.redirect("/listing");
-  },
+    const redirectUrl = res.locals.redirectUrl || "/listing";
+
+    delete req.session.redirectUrl;
+
+    res.redirect(redirectUrl);
+  }
 );
 
-
-
-
-
-router.get("/logout",(req,res,next)=>
-{
-  req.logOut((err)=>
-  {
-    if(err)
-    {
-      return next();
+// Logout
+router.get("/logout", (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
     }
-    req.flash("success","You are logged Out ");
-    res.redirect("/listing")
-  })
-})
 
-
-
-
+    req.flash("success", "You are logged out");
+    res.redirect("/listing");
+  });
+});
 
 module.exports = router;

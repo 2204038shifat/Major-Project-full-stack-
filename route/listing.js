@@ -17,20 +17,21 @@ app.engine('ejs',ejsMate);
 
 const Listing  = require('../models/listing.js');
 
-const {isLoggedIn} = require("../middleware.js");
+const {isLoggedIn, isOwner} = require("../middleware.js");
+const { populate } = require("../models/review.js");
 
 
 
 
 //delete Route
 
-router.delete("/:id",isLoggedIn,async (req,res)=>
+router.delete("/:id",isLoggedIn,isOwner,async (req,res)=>
 {
   let {id}=req.params;
  let deleteListing=  await Listing.findByIdAndDelete(id);
  console.log(deleteListing);
  req.flash("success","Listing successfully deleted")
- res.redirect("/listing");
+ res.redirect(`/listing/${id}`);
 
   //  res.send("delete req send");
 
@@ -42,7 +43,7 @@ router.delete("/:id",isLoggedIn,async (req,res)=>
 
 // Edit and Update Route
 
-router.get("/:id/edit",isLoggedIn,async (req,res)=>
+router.get("/:id/edit",isLoggedIn,isOwner,async (req,res)=>
 {
   let {id}=req.params;
   let listings = await Listing.findById(id);
@@ -58,14 +59,15 @@ router.get("/:id/edit",isLoggedIn,async (req,res)=>
 
 // Update Route
 
-router.put('/:id',isLoggedIn,async(req,res)=>
+router.put('/:id',isLoggedIn,isOwner,async(req,res)=>
 {
   let {id}=req.params;
+
  await Listing.findByIdAndUpdate(id,{...req.body.listing});
 
  req.flash("success","Listing Successfully Updated")
-//  res.redirect(`/listing/${id}`);
-res.redirect("/listing");
+    res.redirect(`/listing/${id}`);
+//  res.redirect("/listing");
 
 })
 
@@ -112,7 +114,11 @@ router.get('/',async (req,res)=>
 router.get('/:id',async (req,res)=>
 {
   let {id} = req.params;
-  const findListData = await Listing.findById(id).populate("reviews").populate("owner");
+  const findListData = await Listing.findById(id).populate( {path:"reviews",
+    populate:{
+      path:"author"
+    }
+  }).populate("owner");
   console.log(findListData);
 
   if(!findListData)

@@ -15,7 +15,7 @@
 
      <h3 class="mb-3">Create a new request</h3>
 
-     <form method="POST" action="/listing">
+     <form method="POST" action="/listing" enctype="multipart/form-data">
       <div class="mb-3">
       <lable for="title" class="form-label">Title</lable>
       <input
@@ -38,12 +38,23 @@
       ></textarea>
     </div>
 
-    <div class="mb-3">
-      <lable for="imgae" class="form-label">image</lable>
+    <!-- <div class="mb-3">
+      <lable for="imgae" class="form-label">Image Link </lable>
       <input
         name="listing[image]"
         class="form-control"
         id=""
+        placeholder="enter image URL/Link"
+      />
+    </div> -->
+
+     <div class="mb-3">
+      <lable for="imgae" class="form-label">Upload Image</lable>
+      <input
+        name="listing[image]"
+        class="form-control"
+        id=""
+        type="file"
         placeholder="enter image URL/Link"
       />
     </div>

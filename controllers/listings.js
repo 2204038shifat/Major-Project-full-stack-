@@ -49,10 +49,11 @@ module.exports.CreateNewListing = (req,res)=>
 
 module.exports.postListing = async (req, res) => {
   let { listing } = req.body;
+  
 
   listing.image = {
-    url: listing.image,
-    filename: "listingimage"
+    url: req.file.path,
+    filename: req.file.filename,
   };
 
   const newListing = new Listing(listing);
